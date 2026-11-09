@@ -8,7 +8,7 @@
 - `SOURCE/CFG/Main.dat.json` — редактируемый Main
 - `SOURCE/CFG/Rus/Lang.dat.json` — редактируемый русский Lang
 - `SOURCE/Data/Image/RouteFrame.png` — редактируемое изображение рамки
-- `SOURCE/ModuleInfo.txt` — оригинальный текст настроек мода
+- `SOURCE/ModuleInfo.txt` — редактируемый UTF-8 текст настроек мода (оригинал в ZIP — Windows-1251; сборщик сохраняет эту кодировку)
 - `tools/build_source.py` — извлечение и точечная пересборка исходников
 - `tools/dat_codec.py` — кодек BlockPar/CacheData из опубликованного DevKit
 - `ORIGINAL_FILE_SHA256.json`, `SOURCE_HASHES.json` — манифесты проверок
