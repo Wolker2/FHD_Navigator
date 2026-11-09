@@ -1,0 +1,29 @@
+{
+  "format": "cachedata",
+  "seed": 1369621460,
+  "root": {
+    "entries": [
+      {
+        "kind": "block",
+        "name": "Bm",
+        "value": {
+          "entries": [
+            {
+              "kind": "block",
+              "name": "FHDNavigator",
+              "value": {
+                "entries": [
+                  {
+                    "kind": "parameter",
+                    "name": "RouteFrame",
+                    "value": "Mods\\FHD_MODS\\FHD_Navigator\\Data\\Image\\RouteFrame.gi"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

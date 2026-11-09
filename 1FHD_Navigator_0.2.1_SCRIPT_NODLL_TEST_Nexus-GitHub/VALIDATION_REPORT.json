@@ -1,0 +1,11 @@
+{
+  "version": "0.2.1_SCRIPT_NODLL_TEST",
+  "original_zip_sha256": "9647e6adf92c1c0eb1366e0ba4311fd851c667f76eb323e4b75783f4fe1ed34f",
+  "original_game_files": 5,
+  "editable_source_files": 5,
+  "dat_byte_exact_roundtrip": true,
+  "clean_install_sha256_exact": true,
+  "gi_png_exported": true,
+  "dll_in_archive": false,
+  "tested_in_game": false
+}

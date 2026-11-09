@@ -1,0 +1,490 @@
+{
+  "format": "blockpar",
+  "seed": 1369621460,
+  "root": {
+    "entries": [
+      {
+        "kind": "block",
+        "name": "BV",
+        "value": {
+          "entries": [
+            {
+              "kind": "block",
+              "name": "OnLoad",
+              "value": {
+                "entries": [
+                  {
+                    "kind": "block",
+                    "name": "FHDNavigatorReset",
+                    "value": {
+                      "entries": [
+                        {
+                          "kind": "parameter",
+                          "name": "000",
+                          "value": "InterfaceText('Galaxy','FHDNavigatorState','');InterfaceText('Galaxy','FHDQuestRouteInfo','');"
+                        }
+                      ],
+                      "sorted": false
+                    }
+                  }
+                ],
+                "sorted": false
+              }
+            },
+            {
+              "kind": "block",
+              "name": "OnStart",
+              "value": {
+                "entries": [
+                  {
+                    "kind": "block",
+                    "name": "FHDNavigatorReset",
+                    "value": {
+                      "entries": [
+                        {
+                          "kind": "parameter",
+                          "name": "000",
+                          "value": "InterfaceText('Galaxy','FHDNavigatorState','');InterfaceText('Galaxy','FHDQuestRouteInfo','');"
+                        }
+                      ],
+                      "sorted": false
+                    }
+                  }
+                ],
+                "sorted": false
+              }
+            }
+          ],
+          "sorted": false
+        }
+      },
+      {
+        "kind": "block",
+        "name": "ML",
+        "value": {
+          "entries": [
+            {
+              "kind": "block",
+              "name": "Galaxy",
+              "value": {
+                "entries": [
+                  {
+                    "kind": "block",
+                    "name": "Panel",
+                    "value": {
+                      "entries": [
+                        {
+                          "kind": "block",
+                          "name": "Panel",
+                          "value": {
+                            "entries": [],
+                            "sorted": false
+                          }
+                        },
+                        {
+                          "kind": "block",
+                          "name": "Panel",
+                          "value": {
+                            "entries": [
+                              {
+                                "kind": "block",
+                                "name": "Panel",
+                                "value": {
+                                  "entries": [
+                                    {
+                                      "kind": "block",
+                                      "name": "Panel",
+                                      "value": {
+                                        "entries": [
+                                          {
+                                            "kind": "block",
+                                            "name": "OnMouseEnterCode",
+                                            "value": {
+                                              "entries": [
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "990",
+                                                  "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));"
+                                                }
+                                              ],
+                                              "sorted": false
+                                            }
+                                          }
+                                        ],
+                                        "sorted": false
+                                      }
+                                    },
+                                    {
+                                      "kind": "block",
+                                      "name": "FHDNavigatorInput",
+                                      "value": {
+                                        "entries": [
+                                          {
+                                            "kind": "block",
+                                            "name": "GraphButton",
+                                            "value": {
+                                              "entries": [
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "Name",
+                                                  "value": "FHDNavigatorMapObserver"
+                                                },
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "Active",
+                                                  "value": "True"
+                                                },
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "Kind",
+                                                  "value": "Normal"
+                                                },
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "KindHit",
+                                                  "value": "Rect"
+                                                },
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "Pos",
+                                                  "value": "0,0,-50"
+                                                },
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "Size",
+                                                  "value": "768,527"
+                                                },
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "MouseBlocking",
+                                                  "value": "False"
+                                                },
+                                                {
+                                                  "kind": "parameter",
+                                                  "name": "MouseBlockingTest",
+                                                  "value": "False"
+                                                },
+                                                {
+                                                  "kind": "block",
+                                                  "name": "OnPressCode",
+                                                  "value": {
+                                                    "entries": [
+                                                      {
+                                                        "kind": "parameter",
+                                                        "name": "990",
+                                                        "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));"
+                                                      }
+                                                    ],
+                                                    "sorted": false
+                                                  }
+                                                },
+                                                {
+                                                  "kind": "block",
+                                                  "name": "OnMouseEnterCode",
+                                                  "value": {
+                                                    "entries": [
+                                                      {
+                                                        "kind": "parameter",
+                                                        "name": "990",
+                                                        "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));"
+                                                      }
+                                                    ],
+                                                    "sorted": false
+                                                  }
+                                                }
+                                              ],
+                                              "sorted": false
+                                            }
+                                          }
+                                        ],
+                                        "sorted": false
+                                      }
+                                    }
+                                  ],
+                                  "sorted": false
+                                }
+                              },
+                              {
+                                "kind": "block",
+                                "name": "GraphButton",
+                                "value": {
+                                  "entries": [],
+                                  "sorted": false
+                                }
+                              },
+                              {
+                                "kind": "block",
+                                "name": "GraphButton",
+                                "value": {
+                                  "entries": [],
+                                  "sorted": false
+                                }
+                              },
+                              {
+                                "kind": "block",
+                                "name": "GraphButton",
+                                "value": {
+                                  "entries": [],
+                                  "sorted": false
+                                }
+                              },
+                              {
+                                "kind": "block",
+                                "name": "GraphButton",
+                                "value": {
+                                  "entries": [
+                                    {
+                                      "kind": "block",
+                                      "name": "OnPressCode",
+                                      "value": {
+                                        "entries": [
+                                          {
+                                            "kind": "parameter",
+                                            "name": "990",
+                                            "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));"
+                                          }
+                                        ],
+                                        "sorted": false
+                                      }
+                                    }
+                                  ],
+                                  "sorted": false
+                                }
+                              },
+                              {
+                                "kind": "block",
+                                "name": "GraphButton",
+                                "value": {
+                                  "entries": [
+                                    {
+                                      "kind": "block",
+                                      "name": "OnPressCode",
+                                      "value": {
+                                        "entries": [
+                                          {
+                                            "kind": "parameter",
+                                            "name": "990",
+                                            "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));"
+                                          }
+                                        ],
+                                        "sorted": false
+                                      }
+                                    }
+                                  ],
+                                  "sorted": false
+                                }
+                              },
+                              {
+                                "kind": "block",
+                                "name": "FHDQuestRouteOverlay",
+                                "value": {
+                                  "entries": [
+                                    {
+                                      "kind": "block",
+                                      "name": "Image",
+                                      "value": {
+                                        "entries": [
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Active",
+                                            "value": "True"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Image",
+                                            "value": "GI,Bm.FHDNavigator.RouteFrame"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "MouseBlocking",
+                                            "value": "False"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "MouseBlockingTest",
+                                            "value": "False"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Name",
+                                            "value": "FHDQuestRouteFrame"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Pos",
+                                            "value": "31,636,0"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Size",
+                                            "value": "758,47"
+                                          }
+                                        ],
+                                        "sorted": false
+                                      }
+                                    },
+                                    {
+                                      "kind": "block",
+                                      "name": "Label",
+                                      "value": {
+                                        "entries": [
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Active",
+                                            "value": "False"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "AlignX",
+                                            "value": "Center"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "AlignY",
+                                            "value": "CenterEx"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Font",
+                                            "value": "Font.2SmallBold"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Help",
+                                            "value": "Help.FHDNavigatorRoute"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "MouseBlocking",
+                                            "value": "False"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "MouseBlockingTest",
+                                            "value": "False"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Name",
+                                            "value": "FHDQuestRouteInfo"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Pos",
+                                            "value": "120,652,-3"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Size",
+                                            "value": "450,24"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "TextColor",
+                                            "value": "0,255,0"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "WordWrap",
+                                            "value": "True"
+                                          }
+                                        ],
+                                        "sorted": false
+                                      }
+                                    }
+                                  ],
+                                  "sorted": false
+                                }
+                              },
+                              {
+                                "kind": "block",
+                                "name": "FHDNavigatorStateStore",
+                                "value": {
+                                  "entries": [
+                                    {
+                                      "kind": "block",
+                                      "name": "Label",
+                                      "value": {
+                                        "entries": [
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Name",
+                                            "value": "FHDNavigatorState"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Active",
+                                            "value": "False"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Font",
+                                            "value": "Font.2SmallBold"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Pos",
+                                            "value": "0,0,0"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "Size",
+                                            "value": "1,1"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "MouseBlocking",
+                                            "value": "False"
+                                          },
+                                          {
+                                            "kind": "parameter",
+                                            "name": "MouseBlockingTest",
+                                            "value": "False"
+                                          }
+                                        ],
+                                        "sorted": false
+                                      }
+                                    }
+                                  ],
+                                  "sorted": false
+                                }
+                              },
+                              {
+                                "kind": "parameter",
+                                "name": "Size",
+                                "value": "810,704"
+                              }
+                            ],
+                            "sorted": false
+                          }
+                        },
+                        {
+                          "kind": "block",
+                          "name": "OnKey",
+                          "value": {
+                            "entries": [
+                              {
+                                "kind": "parameter",
+                                "name": "990",
+                                "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));"
+                              }
+                            ],
+                            "sorted": false
+                          }
+                        }
+                      ],
+                      "sorted": false
+                    }
+                  }
+                ],
+                "sorted": false
+              }
+            }
+          ],
+          "sorted": false
+        }
+      }
+    ],
+    "sorted": false
+  }
+}

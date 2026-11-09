@@ -1,0 +1,22 @@
+{
+  "Mods/FHD_MODS/FHD_Navigator/CFG/CacheData.dat": {
+    "size": 120,
+    "sha256": "9e8f9ea32e398af3f4b160faace7183ac88d0ac56aa1108bf4cbe914f15c652c"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/CFG/Main.dat": {
+    "size": 682,
+    "sha256": "4739cd32bb2e116f05de1dca7fc24a22b6f06d8eaa7c69e151dda13d0bb0d720"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/CFG/Rus/Lang.dat": {
+    "size": 4600,
+    "sha256": "54af36f31418852c9ed6f432be7972ad6519f4d84e4cc2057f74d6c0b531dfe6"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/Data/Image/RouteFrame.gi": {
+    "size": 94824,
+    "sha256": "73c3017a0cbb67668e37c8b698d59e8275719f87e913731e843f69b828b34bc2"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/ModuleInfo.txt": {
+    "size": 863,
+    "sha256": "16dd69c2d73f64fc6adb6d5b0c73366f9d119a237f3301a4b93f02d3f1643044"
+  }
+}
