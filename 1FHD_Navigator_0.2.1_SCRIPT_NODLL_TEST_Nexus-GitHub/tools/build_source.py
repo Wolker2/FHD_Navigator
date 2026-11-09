@@ -74,9 +74,9 @@ def export_source() -> None:
             elif rel == META:
                 dst = ROOT / META_SOURCE
                 dst.parent.mkdir(parents=True, exist_ok=True)
-                decoded = raw.decode("utf-8")
+                decoded = raw.decode("cp1251")
                 dst.write_bytes(decoded.encode("utf-8"))
-                assert dst.read_bytes() == raw, "ModuleInfo text changed during export"
+                assert dst.read_bytes().decode("utf-8").encode("cp1251") == raw, "ModuleInfo CP1251 roundtrip failed"
                 sources[META_SOURCE] = sha(dst.read_bytes())
             elif rel == ITEM:
                 gi = temp / "RouteFrame.gi"
@@ -113,7 +113,7 @@ def build(verify: bool = False) -> None:
                 overlay[PREFIX + datpath] = dat_codec.encode(project)
             elif rel == META_SOURCE:
                 raw.decode("utf-8")
-                overlay[PREFIX + META] = raw
+                overlay[PREFIX + META] = raw.decode("utf-8").encode("cp1251")
             elif rel == PNG:
                 destdir = temp / "converted"
                 destdir.mkdir()
