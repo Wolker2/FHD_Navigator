@@ -1,0 +1,61 @@
+name: Publish Navigator v0.2.1 editable source
+
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-navigator-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install GI converter
+        run: git clone --depth=1 https://github.com/Xenomorphchyma/SRHD-XenoModKit.git /tmp/SRHD-XenoModKit
+      - name: Extract and verify sources
+        env:
+          PYTHONPATH: /tmp/SRHD-XenoModKit
+        run: |
+          python 1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/tools/build_source.py --export
+          python 1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/tools/build_source.py --verify
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import hashlib, json
+          base=Path('1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub')
+          orig=base/'install/FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST.zip'
+          rebuilt=base/'DIST/FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST.zip'
+          expected='9647e6adf92c1c0eb1366e0ba4311fd851c667f76eb323e4b75783f4fe1ed34f'
+          h=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+          assert h(orig)==h(rebuilt)==expected
+          with ZipFile(orig) as a, ZipFile(rebuilt) as b:
+              assert a.namelist()==b.namelist()
+              assert len(a.infolist())==5
+              assert all(a.read(p)==b.read(p) for p in a.namelist())
+          hashes=json.loads((base/'SOURCE_HASHES.json').read_text())
+          report={'version':'0.2.1_SCRIPT_NODLL_TEST','original_zip_sha256':expected,
+                  'original_game_files':5,'editable_source_files':len(hashes),
+                  'dat_byte_exact_roundtrip':True,'clean_install_sha256_exact':True,
+                  'gi_png_exported':True,'dll_in_archive':False,'tested_in_game':False}
+          assert len(hashes)==5
+          (base/'VALIDATION_REPORT.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+          print('PASS',report)
+          PY
+      - name: Commit recovered sources
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- 1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/SOURCE 1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/ORIGINAL_FILE_SHA256.json 1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/SOURCE_HASHES.json 1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/VALIDATION_REPORT.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish editable Navigator 0.2.1 source files with verified clean rebuild'
+            git push origin HEAD:main
+          fi
