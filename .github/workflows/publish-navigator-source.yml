@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/publish-navigator-source.yml'
+      - '1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/tools/build_source.py'
   workflow_dispatch:
 
 permissions:
