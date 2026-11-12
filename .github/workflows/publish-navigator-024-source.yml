@@ -1,0 +1,64 @@
+name: Publish Navigator v0.2.4 autopilot source
+
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-navigator-024-source.yml'
+      - '1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/tools/build_source.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install GI conversion toolkit
+        run: git clone --depth=1 https://github.com/Xenomorphchyma/SRHD-XenoModKit.git /tmp/SRHD-XenoModKit
+      - name: Export source and verify clean archive
+        env:
+          PYTHONPATH: /tmp/SRHD-XenoModKit
+        run: |
+          python 1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/tools/build_source.py --export
+          python 1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/tools/build_source.py --verify
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import hashlib, json
+          p=Path('1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub')
+          orig=p/'install/FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST.zip'
+          built=p/'DIST/FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST.zip'
+          sha=lambda path:hashlib.sha256(path.read_bytes()).hexdigest()
+          exp='32e6896708c0ecff507570b79d5bfc3f52b9955654c8501acb3fa91c54b6fa60'
+          assert sha(orig)==sha(built)==exp
+          with ZipFile(orig) as a,ZipFile(built) as b:
+              assert len(a.namelist())==11 and a.namelist()==b.namelist()
+              assert all(a.read(n)==b.read(n) for n in a.namelist())
+          source=json.loads((p/'SOURCE_HASHES.json').read_text())
+          assert len(source)==15, len(source)
+          png=list((p/'SOURCE/PNG').glob('*.png'))
+          assert len(png)==4, len(png)
+          report={'version':'0.2.4_AUTOPILOT_OPEN_TEST','original_zip_sha256':exp,
+                  'game_files':11,'source_and_editable_files':len(source),'original_txt_files':3,
+                  'dat_json_files':3,'original_gi_files':4,'editable_png_files':len(png),
+                  'dll_present':False,'game_tested':False,'clean_rebuild_byte_exact':True,
+                  'dat_roundtrip_byte_exact':True,'module_info_cp1251_roundtrip':True}
+          (p/'VALIDATION_REPORT.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('PASS',report)
+          PY
+      - name: Publish prepared source files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- 1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/SOURCE 1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/ORIGINAL_FILE_SHA256.json 1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/SOURCE_HASHES.json 1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/VALIDATION_REPORT.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish editable Navigator 0.2.4 autopilot sources with verified ZIP'
+            git push origin HEAD:main
+          fi

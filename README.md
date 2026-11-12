@@ -1,15 +1,23 @@
-# FHD_Navigator — Space Rangers HD
+# FHD_Navigator — Космические рейнджеры HD
 
-Отображение дней полёта при прокладывании маршрута на галактической карте.
+Мод навигатора маршрутов.
 
-## 0.2.1 SCRIPT_NODLL_TEST
+## Новая версия: 0.2.4 AUTOPILOT_OPEN_TEST
 
-- [Установочный ZIP](1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/install/FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST.zip)
-- [Исходники для Nexus / GitHub](1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/SOURCE)
-- [Сборщик и кодек DAT](1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/tools)
-- [Описание версии](1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/README.md)
-- [Отчёт проверки](1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub/VALIDATION_REPORT.json)
+- [Готовый ZIP](1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/install/FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST.zip)
+- [Исходники для Nexus / GitHub](1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/SOURCE)
+- [Сборщик](1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/tools/build_source.py)
+- [Описание и особенности версии](1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/README.md)
+- [Отчёт проверки](1FHD_Navigator_0.2.4_AUTOPILOT_OPEN_TEST_Nexus-GitHub/VALIDATION_REPORT.json)
 
-**SHA-256 ZIP:** `9647e6adf92c1c0eb1366e0ba4311fd851c667f76eb323e4b75783f4fe1ed34f`.
+11 файлов игры: три DAT, четыре GI (кнопки автопилота A/D/N и рамка маршрута), ModuleInfo и три исходных TXT. **DLL отсутствуют**.
 
-Оригинальный архив содержит 5 игровых файлов (3 DAT, 1 GI, ModuleInfo). DLL отсутствуют. Статус **TEST**, работа в игре при публикации не проверена.
+ZIP SHA-256: `32e6896708c0ecff507570b79d5bfc3f52b9955654c8501acb3fa91c54b6fa60`.
+
+Статус — **TEST**. Проверяется целостность и воспроизводимость исходников; работа автопилота в игре не тестировалась.
+
+## Предыдущая версия
+
+- [0.2.1 SCRIPT_NODLL_TEST — исходники и установка](1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub)
+
+Старые файлы остаются без изменений.
