@@ -1,0 +1,378 @@
+Help ~{
+    FHDNavigatorRoute=Примерное время до последней системы маршрута: гиперпереходы, полёт внутри систем и необходимые дозаправки. Каждая дозаправка в космосе: подлёт, день посадки, день взлёта и вылет к переходу. Старт с планеты или станции: ещё один день взлёта. Заправка до полного бака. Полёт по прямой, по текущим координатам планет и станций; бои и посадка в конечной системе не включены.
+    FHDNavigatorAutopilot=Запустить Автопилот по системам выбранного маршрута.
+}
+Script ~{
+    FHDNavigator ~{
+        Update ~{
+            000=function NavPart(str text,int number){
+            001=int k=0;int p=0;
+            002=while(k<number){p=findsubstr(text,'|');if(p<0){result='';exit;}text=substr(text,p+1);k=k+1;}
+            003=p=findsubstr(text,'|');if(p>=0)text=substr(text,0,p);
+            004=result=text;
+            005=}
+            006=function NavCount(str text){
+            007=int n=0;int i=0;
+            008=if(text!='')n=1;
+            009=for(i=0;i<count(text);i=i+1){if(substr(text,i,1)==','){n=n+1;}}
+            010=result=n;
+            011=}
+            012=function NavIndex(str text,int number){
+            013=int k=0;int p=0;
+            014=while(k<number){p=findsubstr(text,',');if(p<0){result=-1;exit;}text=substr(text,p+1);k=k+1;}
+            015=p=findsubstr(text,',');if(p>=0)text=substr(text,0,p);
+            016=if(text==''){result=-1;exit;}
+            017=int value=text;result=value;
+            018=}
+            019=function NavDrop(str text){
+            020=int i=0;int p=-1;
+            021=for(i=0;i<count(text);i=i+1){if(substr(text,i,1)==','){p=i;}}
+            022=if(p<0){result='';exit;}
+            023=result=substr(text,0,p);
+            024=}
+            025=function NavDistance(int a,int b){
+            026=result=round(sqrt(Dist2Star(GalaxyStar(a),GalaxyStar(b))));
+            027=}
+            028=function NavTotal(int origin,str text){
+            029=int n=NavCount(text);int last=origin;int total=0;int i=0;int next=0;
+            030=if(n<1 || n>256){result=-1;exit;}
+            031=for(i=0;i<n;i=i+1){next=NavIndex(text,i);if(next<0 || next>=GalaxyStars()){result=-1;exit;}total=total+NavDistance(last,next);last=next;}
+            032=result=total;
+            033=}
+            034=function NavRadius(dword star){
+            035=int n=StarPlanets(star);
+            036=if(n<1){result=-1;exit;}
+            037=dword planet=StarPlanets(star,n-1);
+            038=result=round(PlanetOrbitRadius(planet)+PlanetSize(planet)+800);
+            039=}
+            040=function NavShow(str text){
+            041=InterfaceText('Galaxy','FHDQuestRouteInfo',text);
+            042=InterfaceState('Galaxy','FHDQuestRouteInfo',1);
+            043=}
+            044=function NavClear(){
+            044a=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.SetAutopilotButton'),'showButton',0);
+            045=str currentText=UICheckElement('Galaxy','FHDQuestRouteInfo','Text');
+            046=if(currentText=='' || findsubstr(currentText,'Полёт:')==0 || findsubstr(currentText,'Время полёта:')==0){NavShow('');}
+            047=}
+            048=function NavCeil(float value){int rounded=value;if(value>rounded)rounded=rounded+1;result=rounded;}
+            049=function NavHyper(float length,int boost){
+            050=int counter=max(2,round(length*0.1)+1);int days=0;
+            051=while(counter>0){counter=counter-1;if(counter>1){counter=counter-boost;if(counter<1)counter=1;}days=days+1;}
+            052=result=days;
+            053=}
+            054=function NavPort(dword star,dword ship,float x,float y,float dx,float dy){
+            055=dword port=0;dword candidate=0;int i=0;int owner=0;int kind=0;int standing=0;
+            056=float best=1.0e20;float distance=0.0;
+            057=for(i=0;i<StarPlanets(star);i=i+1){
+            058=candidate=StarPlanets(star,i);owner=PlanetOwner(candidate);
+            059=if(!((owner>=0 && owner<=4) || owner==7))continue;
+            060=if(GetRelationPlanet(candidate,ship)<10)continue;
+            061=distance=sqrt(sqr(CoordX(candidate)-x)+sqr(CoordY(candidate)-y))+sqrt(sqr(dx-CoordX(candidate))+sqr(dy-CoordY(candidate)));
+            062=if(distance<best){best=distance;port=candidate;}
+            063=}
+            064=for(i=0;i<StarRuins(star);i=i+1){
+            065=candidate=StarRuins(star,i);kind=ShipTypeN(candidate);standing=ShipStanding(candidate);
+            066=if(kind<6 || kind>11 || standing<2 || standing>6)continue;
+            067=if(ShipGetBad(candidate)==ship)continue;
+            068=distance=sqrt(sqr(CoordX(candidate)-x)+sqr(CoordY(candidate)-y))+sqrt(sqr(dx-CoordX(candidate))+sqr(dy-CoordY(candidate)));
+            069=if(distance<best){best=distance;port=candidate;}
+            070=}
+            071=result=port;
+            072=}
+            073=function NavSegment(int current,str route,int first,float x,float y,int speed,int fuel,int capacity,int regen,int boost){
+            074=int i=0;int next=0;int cost=0;int fly=0;int countRoute=NavCount(route);
+            075=dword a=0;dword b=0;float ra=0.0;float rb=0.0;float dx=0.0;float dy=0.0;float length=0.0;
+            076=float px=0.0;float py=0.0;
+            077=for(i=first;i<countRoute;i=i+1){
+            078=next=NavIndex(route,i);if(next==current)continue;
+            079=a=GalaxyStar(current);b=GalaxyStar(next);ra=NavRadius(a);rb=NavRadius(b);
+            080=if(ra<0 || rb<0){result=0;exit;}
+            081=dx=CoordX(b)-CoordX(a);dy=CoordY(b)-CoordY(a);length=sqrt(sqr(dx)+sqr(dy));
+            082=if(length<=0.0){result=0;exit;}
+            083=cost=round(length);if(cost>ShipJump(Player()) || cost>max(capacity,fuel)){result=0;exit;}
+            084=px=dx/length*(ra-400);py=dy/length*(ra-400);
+            085=fly=NavCeil(sqrt(sqr(px-x)+sqr(py-y))/speed);
+            086=if(fuel<capacity)fuel=min(capacity,fuel+regen*(fly+1));
+            087=if(fuel<cost){result=0;exit;}
+            088=fuel=fuel-cost;if(fuel<capacity)fuel=min(capacity,fuel+regen*NavHyper(length,boost));
+            089=x=-dx/length*(rb-300);y=-dy/length*(rb-300);current=next;
+            090=if(i==countRoute-1){result=1;exit;}
+            091=if(NavPort(b,Player(),x,y,x,y)){result=1;exit;}
+            092=}
+            093=result=1;
+            094=}
+            095=function NavCalculate(int origin,str route){
+            096=dword ship=Player();int speed=ShipSpeed(ship);int n=NavCount(route);
+            097=if(speed<=0){NavShow('Время полёта: корабль не может двигаться');exit;}
+            098=if(ShipInHyperSpace(ship)){NavShow('');exit;}
+            099=dword tank=ShipEqInSlot(ship,t_FuelTanks);
+            100=if(!tank){NavShow('Время полёта: нет топливного бака');exit;}
+            101=int fuel=ShipFuel(ship);int capacity=GetEquipmentStats(tank,0);int regen=0;
+            102=if(capacity<=0){NavShow('Время полёта: нет ёмкости для топлива');exit;}
+            103=int goo=ArtefactTypeInUse(ship,t_ArtefactFuel);
+            104=if(goo>0){regen=goo*(int(CT('Artefacts.NumericValues.kArtefactFuel'))+int(CT('Artefacts.NumericValues.kArtefactFuelEx'))*ArtefactTypeBoosted(ship,t_ArtefactFuel));}
+            105=int boost=ArtefactTypeInUse(ship,t_ArtGiperJump)*(1+ArtefactTypeBoosted(ship,t_ArtGiperJump));
+            106=float x=CoordX(ship);float y=CoordY(ship);int days=0;int refuels=0;
+            107=dword planet=GetShipPlanet(ship);dword station=GetShipRuins(ship);dword dock=planet;
+            108=if(!dock)dock=station;
+            109=if(dock){x=CoordX(dock);y=CoordY(dock);days=1;if(fuel<capacity)fuel=min(capacity,fuel+regen);}
+            110=int current=origin;int i=0;int next=0;int fly=0;int jumps=0;int cost=0;int hyper=0;
+            111=dword a=0;dword b=0;dword port=0;
+            112=float ra=0.0;float rb=0.0;float dx=0.0;float dy=0.0;float length=0.0;
+            113=float departureX=0.0;float departureY=0.0;
+            114=for(i=0;i<n;i=i+1){
+            115=next=NavIndex(route,i);if(next==current)continue;
+            116=a=GalaxyStar(current);b=GalaxyStar(next);ra=NavRadius(a);rb=NavRadius(b);
+            117=if(ra<0 || rb<0){NavShow('Время полёта: нет данных о размере системы');exit;}
+            118=dx=CoordX(b)-CoordX(a);dy=CoordY(b)-CoordY(a);length=sqrt(sqr(dx)+sqr(dy));
+            119=if(length<=0.0){NavShow('');exit;}
+            120=cost=round(length);
+            121=if(cost>ShipJump(ship) || cost>max(capacity,fuel)){NavShow('Время полёта: участок превышает дальность или бак');exit;}
+            122=departureX=dx/length*(ra-400);departureY=dy/length*(ra-400);
+            123=port=NavPort(a,ship,x,y,departureX,departureY);
+            124=if(i==0 && dock)port=dock;
+            125=if(port && !NavSegment(current,route,i,x,y,speed,fuel,capacity,regen,boost)){
+            126=if(!NavSegment(current,route,i,x,y,speed,capacity,capacity,regen,boost)){NavShow('Время полёта: не хватает топлива до следующей заправки');exit;}
+            127=if(!(i==0 && dock)){
+            128=fly=NavCeil(sqrt(sqr(CoordX(port)-x)+sqr(CoordY(port)-y))/speed);
+            129=days=days+fly+2;
+            130=x=CoordX(port);y=CoordY(port);
+            131=}
+            132=fuel=capacity;refuels=refuels+1;
+            133=}
+            134=fly=NavCeil(sqrt(sqr(departureX-x)+sqr(departureY-y))/speed);
+            135=if(fuel<capacity)fuel=min(capacity,fuel+regen*(fly+1));
+            136=if(fuel<cost){NavShow('Время полёта: нужна заправка, нет доступного пункта');exit;}
+            137=days=days+fly+1;fuel=fuel-cost;
+            138=hyper=NavHyper(length,boost);days=days+hyper;if(fuel<capacity)fuel=min(capacity,fuel+regen*hyper);
+            139=x=-dx/length*(rb-300);y=-dy/length*(rb-300);current=next;jumps=jumps+1;
+            140=}
+            141=str text='Полёт: ~ ';text=text+days;text=text+' дн. | Прыжков: ';text=text+jumps;text=text+' | Заправок: ';text=text+refuels;NavShow(text);
+            142=}
+            142a=function NavAutopilotButton(dword ship){int showAuto=0;if(!ShipInHyperSpace(ship) && BlockExist('Script.FHDAutopilot.Run') && BlockExist('Script.FHDAutopilot.InitController') && BlockExist('Script.FHDAutopilot.FindNextHop') && !(InterfaceState('Galaxy','FHDAutopilotMapAccept')==1))showAuto=1;ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.SetAutopilotButton'),'showButton',showAuto);}
+            143=function NavUpdate(){
+            144=if(CurrentForm()!='Galaxy')exit;
+            145=dword ship=Player();if(!ship)exit;
+            146=int mapWidth=UICheckElement('Galaxy','Map','SizeX');int mapHeight=UICheckElement('Galaxy','Map','SizeY');
+            147=if(UICheckElement('Galaxy','FHDNavigatorMapObserver','SizeX')!=mapWidth || UICheckElement('Galaxy','FHDNavigatorMapObserver','SizeY')!=mapHeight){InterfaceSize('Galaxy','FHDNavigatorMapObserver',mapWidth,mapHeight);}
+            148=InterfacePos('Galaxy','FHDNavigatorMapObserver',UICheckElement('Galaxy','Map','PosX'),UICheckElement('Galaxy','Map','PosY'),-50);
+            149=str distanceText=UICheckElement('Galaxy','Distance','Text');
+            150=if(distanceText=='' || !UICheckElement('Galaxy','PathDesPos','IsActive')){
+            151=InterfaceText('Galaxy','FHDNavigatorState','');NavClear();exit;
+            152=}
+            153=int total=distanceText;
+            154=int firstX=UICheckElement('Galaxy','PathDesPos','PosX');
+            155=int firstY=UICheckElement('Galaxy','PathDesPos','PosY');
+            156=int lastX=UICheckElement('Galaxy','Distance','PosX')-15;
+            157=float lastY=UICheckElement('Galaxy','Distance','PosY')+int(UICheckElement('Galaxy','Distance','SizeY')/2);
+            158=str signature='';signature=signature+Id(ShipStar(ship));signature=signature+':';signature=signature+CurTurn();signature=signature+':';signature=signature+ShipSpeed(ship);
+            159=signature=signature+':';signature=signature+ArtefactTypeInUse(ship,t_ArtGiperJump);signature=signature+':';signature=signature+ArtefactTypeBoosted(ship,t_ArtGiperJump);
+            160=signature=signature+':';signature=signature+ShipFuel(ship);signature=signature+':';signature=signature+GetShipPlanet(ship);signature=signature+':';signature=signature+GetShipRuins(ship);
+            161=signature=signature+':';signature=signature+CoordX(ship);signature=signature+':';signature=signature+CoordY(ship);
+            162=signature=signature+':';signature=signature+ShipJump(ship);signature=signature+':';signature=signature+GetEquipmentStats(ShipEqInSlot(ship,t_FuelTanks),0);
+            163=signature=signature+':';signature=signature+ArtefactTypeInUse(ship,t_ArtefactFuel);signature=signature+':';signature=signature+ArtefactTypeBoosted(ship,t_ArtefactFuel);
+            164=signature=signature+':';signature=signature+total;signature=signature+':';signature=signature+firstX;signature=signature+':';signature=signature+firstY;
+            165=signature=signature+':';signature=signature+lastX;signature=signature+':';signature=signature+lastY;
+            166=str state=InterfaceText('Galaxy','FHDNavigatorState');
+            167=if(NavPart(state,2)==signature){NavAutopilotButton(ship);exit;}
+            168=int origin=-1;int first=-1;int last=-1;int firstHits=0;int lastHits=0;
+            169=int stars=GalaxyStars();int i=0;int sx=0;int sy=0;dword star=0;str key='';
+            170=if(stars<1 || stars>16384){NavClear();InterfaceText('Galaxy','FHDNavigatorState','');exit;}
+            171=for(i=0;i<stars;i=i+1){
+            172=star=GalaxyStar(i);if(star==ShipStar(ship))origin=i;
+            173=if(!SectorVisible(StarToCon(star)))continue;
+            174=key='gs_';key=key+Id(star);
+            175=sx=UICheckElement('Galaxy',key,'PosX');sy=UICheckElement('Galaxy',key,'PosY');
+            176=if(sx==firstX && sy==firstY){first=i;firstHits=firstHits+1;}
+            177=if(sx==lastX && abs(sy-lastY)<=1){last=i;lastHits=lastHits+1;}
+            178=}
+            179=if(origin<0 || firstHits!=1 || lastHits!=1){NavClear();InterfaceText('Galaxy','FHDNavigatorState','');exit;}
+            180=str route=NavPart(state,1);int oldOrigin=-1;str oldOriginText=NavPart(state,0);
+            181=if(oldOriginText!='')oldOrigin=oldOriginText;
+            182=int n=NavCount(route);int previousTotal=-1;int previousLast=-1;str shorter='';
+            183=if(oldOrigin==origin && n>0 && NavIndex(route,0)==first){
+            184=previousTotal=NavTotal(origin,route);previousLast=NavIndex(route,n-1);
+            185=if(last==first && total==NavDistance(origin,first)){route='';route=route+first;}
+            186=else if(previousTotal==total && previousLast==last){}
+            187=else if(n>1 && NavIndex(route,n-2)==last && previousTotal-NavDistance(last,previousLast)==total)route=NavDrop(route);
+            188=else if(previousLast!=last && previousTotal+NavDistance(previousLast,last)==total){route=route+',';route=route+last;}
+            189=else route='';
+            190=}else{
+            191=route='';if(first==last && total==NavDistance(origin,first))route=route+first;
+            192=}
+            193=if(route=='' || NavCount(route)>256 || NavTotal(origin,route)!=total){
+            194=InterfaceText('Galaxy','FHDNavigatorState','');NavClear();exit;
+            195=}
+            196=str saved='';saved=saved+origin;saved=saved+'|';saved=saved+route;saved=saved+'|';saved=saved+signature;
+            197=InterfaceText('Galaxy','FHDNavigatorState',saved);NavCalculate(origin,route);
+            197a=NavAutopilotButton(ship);
+            198=}
+            199=NavUpdate();
+        }
+        LaunchAutopilot ~{
+            0000=if(CurrentForm()!='Galaxy' || !Player() || FilmFlags(0) || IsFilm())exit;if(InterfaceState('Galaxy','FHDAutopilotMapAccept')==1 || UICheckElement('Galaxy','FHDNavigatorAutopilotOpen','IsActive'))exit;
+            0001=if(!(BlockExist('Script.FHDAutopilot.Run') && BlockExist('Script.FHDAutopilot.InitController') && BlockExist('Script.FHDAutopilot.FindNextHop'))){
+            0002=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.SetAutopilotButton'),'showButton',0);
+            0003=exit;
+            0004=}
+            0005=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));
+            0006=str navState=InterfaceText('Galaxy','FHDNavigatorState');
+            0007=int firstSeparator=findsubstr(navState,'|');
+            0008=if(firstSeparator<1){
+            0009=MessageBox('Проложите маршрут на карте галактики.',40);
+            0010=exit;
+            0011=}
+            0012=int mapOrigin=substr(navState,0,firstSeparator);
+            0013=str mapRoute=substr(navState,firstSeparator+1);
+            0014=int routeEnd=findsubstr(mapRoute,'|');
+            0015=if(routeEnd<1)exit;
+            0016=mapRoute=substr(mapRoute,0,routeEnd);
+            0017=int launchOk=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.StartAutopilot'),'mapOrigin',mapOrigin,'mapRoute',mapRoute,'result');
+            0018=if(launchOk){
+            0019=InterfaceText('Galaxy','FHDNavigatorState','');
+            0020=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.SetAutopilotButton'),'showButton',0);
+            0021=}
+        }
+        SetAutopilotButton ~{
+            0000=if(CurrentForm()!='Galaxy')exit;
+            0001=int wasVisible=UICheckElement('Galaxy','FHDNavigatorAutopilot','IsActive');
+            0002=if(!showButton){
+            0003=if(wasVisible)InterfaceState('Galaxy','FHDNavigatorAutopilot',0);
+            0004=if(InterfaceState('Galaxy','FHDNavigatorAutopilotOpen')==1 || UICheckElement('Galaxy','FHDNavigatorAutopilotOpen','IsActive'))InterfaceState('Galaxy','FHDNavigatorAutopilotOpen',0);
+            0005=exit;
+            0006=}
+            0007=if(wasVisible)exit;
+            0008=InterfaceImage('Galaxy','FHDNavigatorAutopilotOpen','Bm.FormGalaxy2.2Anim');
+            0009=InterfaceState('Galaxy','FHDNavigatorAutopilotOpen',1);
+            0010=InterfaceState('Galaxy','FHDNavigatorAutopilot',1);
+        }
+        StartAutopilot ~{
+            0000=int result=0;
+            0001=if(CurrentForm()!='Galaxy' || !Player() || FilmFlags(0) || IsFilm())exit;
+            0002=if(ShipInHyperSpace(Player()) || ShipIsTakeoff(Player())){
+            0003=MessageBox('Дождитесь окончания прыжка или взлёта.',40);
+            0004=exit;
+            0005=}
+            0006=dword currentStar=ShipStar(Player());
+            0007=if(!currentStar || currentStar!=GalaxyStar(mapOrigin) || mapRoute==''){
+            0008=MessageBox('Маршрут устарел. Проложите его заново.',40);
+            0009=exit;
+            0010=}
+            0011=if(NoJump()){
+            0012=MessageBox('Игра сейчас запрещает гиперпрыжки.',40);
+            0013=exit;
+            0014=}
+            0015=int jumpRange=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.GetJumpRange'),'result');
+            0016=if(ShipSpeed(Player())<1 || jumpRange<1){
+            0017=MessageBox('Двигатель, топливный бак или скорость корабля не позволяют начать перелёт.',40);
+            0018=exit;
+            0019=}
+            0020=if(ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.OtherControllerActive'),'result')){
+            0021=MessageBox('Сначала отключите управление AutoBot.',40);
+            0022=exit;
+            0023=}
+            0024=dword dockPlanet=GetShipPlanet(Player());
+            0025=dword dockStation=GetShipRuins(Player());
+            0026=int docked=0;
+            0027=if(dockPlanet || dockStation)docked=1;
+            0028=if(!docked && !ShipInNormalSpace(Player()))exit;
+            0029=str route='';
+            0030=int finalStarId=0;
+            0031=int prevId=Id(currentStar);
+            0032=dword prevStar=currentStar;
+            0033=int pointCount=0;
+            0034=int firstJumpFuel=0;
+            0035=while(count(mapRoute)){
+            0036=pointCount=pointCount+1;
+            0037=if(pointCount>256)exit;
+            0038=int comma=findsubstr(mapRoute,',');
+            0039=str token=mapRoute;
+            0040=if(comma>=0){
+            0041=token=substr(mapRoute,0,comma);
+            0042=mapRoute=substr(mapRoute,comma+1);
+            0043=if(mapRoute=='')exit;
+            0044=}
+            0045=else mapRoute='';
+            0046=if(count(token)<1 || count(token)>5)exit;
+            0047=int digit=0;
+            0048=for(digit=0;digit<count(token);digit=digit+1){
+            0049=if(findsubstr('0123456789',substr(token,digit,1))<0)exit;
+            0050=}
+            0051=int pointIndex=token;
+            0052=dword target=GalaxyStar(pointIndex);
+            0053=if(!target)exit;
+            0054=int pointId=Id(target);
+            0055=if(pointId<1 || GalaxyStar(pointId-1)!=target)exit;
+            0056=if(pointId==prevId)continue;
+            0057=if(!ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.IsRouteStarAllowed'),'star',target,'result')){
+            0058=MessageBox('Автопилот не может пройти через систему '+StarName(target)+'. Доступны открытые системы Коалиции и пиратов.',40);
+            0059=exit;
+            0060=}
+            0061=dword nextHop=target;
+            0062=int distance=round(sqrt(Dist2Star(prevStar,target)));
+            0063=if(!finalStarId || distance<1 || jumpRange<distance){
+            0064=nextHop=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.FindNextHop'),'start_id',prevId,'target_id',pointId,'jump_range',jumpRange,'result');
+            0065=if(!nextHop){
+            0066=MessageBox('Нет безопасного маршрута из системы '+StarName(prevStar)+' в систему '+StarName(target)+'.',40);
+            0067=exit;
+            0068=}
+            0069=}
+            0070=if(!finalStarId)firstJumpFuel=round(sqrt(Dist2Star(currentStar,nextHop)));
+            0071=if(count(route))route=route+',';
+            0072=route=route+pointId;
+            0073=prevStar=target;
+            0074=prevId=pointId;
+            0075=finalStarId=pointId;
+            0076=}
+            0077=if(!finalStarId)exit;
+            0078=if(ShipFuel(Player())<firstJumpFuel && !ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.FindServiceObject'),'result')){
+            0079=MessageBox('Для первого прыжка не хватает топлива. В текущей системе нет безопасной дозаправки.',40);
+            0080=exit;
+            0081=}
+            0082=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.Ensure'));
+            0083=int previousStatus=ShipCustomShipInfoData(Player(),'FHDAutopilotCore',1);
+            0084=if(previousStatus==1 || previousStatus==2){
+            0085=if(!MessageBoxYesNo('Заменить сохранённый маршрут Автопилота маршрутом Навигатора?'))exit;
+            0086=}
+            0087=if(!ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.InitController'),'result')){
+            0088=MessageBox('Не удалось запустить обработчик Автопилота.',40);
+            0089=exit;
+            0090=}
+            0091=if(previousStatus)ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.HardReset'));
+            0092=str landing='A';
+            0093=ShipCustomShipInfoData(Player(),'FHDAutopilotCore',2,finalStarId);
+            0094=ShipCustomShipInfoData(Player(),'FHDAutopilotCore',3,HullHP(Player()));
+            0095=ShipCustomShipInfoTextData(Player(),'FHDAutopilotCore',1,route);
+            0096=ShipCustomShipInfoTextData(Player(),'FHDAutopilotCore',2,landing);
+            0097=ShipCustomShipInfoTextData(Player(),'FHDAutopilotCore',3,'0');
+            0098=ShipCustomShipInfoData(Player(),'FHDAutopilotMem',1,0);
+            0099=ShipCustomShipInfoData(Player(),'FHDAutopilotMem',2,0);
+            0100=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.ClearServiceSnapshot'));
+            0101=OrderLock(Player(),0);
+            0102=FilmFlags(2,0);FilmFlags(3,0);
+            0103=ShipCustomShipInfoData(Player(),'FHDAutopilotPauseRequest',1,0);
+            0104=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.ClearRuntime'));
+            0105=if(docked){
+            0106=int canService=0;
+            0107=if(dockPlanet)canService=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.IsSafePlanet'),'planet',dockPlanet,'result');
+            0108=else if(dockStation)canService=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.IsSafeStation'),'station',dockStation,'result');
+            0109=if(canService && !ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.Service'),'result')){
+            0110=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.HardReset'));
+            0111=MessageBox('Автопилот не запущен: не хватило средств на обслуживание.',40);
+            0112=exit;
+            0113=}
+            0114=ShipCustomShipInfoData(Player(),'FHDAutopilotMem',1,1);
+            0115=}
+            0116=ShipCustomShipInfoData(Player(),'FHDAutopilotCore',1,1);
+            0117=if(docked)ExtremalTakeOff();
+            0118=else{
+            0119=OrderNone(Player());
+            0120=ForceNextDay();
+            0121=}
+            0122=ScriptActionsRun();
+            0123=str nextForm=FormChange();
+            0124=if(nextForm!='')FormChange(nextForm);
+            0125=result=1;
+        }
+    }
+}

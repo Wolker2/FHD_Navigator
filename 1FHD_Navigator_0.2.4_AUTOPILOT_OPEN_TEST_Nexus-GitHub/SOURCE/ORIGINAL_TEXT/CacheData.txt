@@ -1,0 +1,8 @@
+Bm{
+    FHDNavigator{
+        RouteFrame=Mods\FHD_MODS\FHD_Navigator\Data\Image\RouteFrame.gi
+        SlotA=Mods\FHD_MODS\FHD_Navigator\Data\Image\AutopilotA.gi
+        SlotD=Mods\FHD_MODS\FHD_Navigator\Data\Image\AutopilotD.gi
+        SlotN=Mods\FHD_MODS\FHD_Navigator\Data\Image\AutopilotN.gi
+    }
+}

@@ -1,0 +1,46 @@
+{
+  "Mods/FHD_MODS/FHD_Navigator/CFG/CacheData.dat": {
+    "size": 154,
+    "sha256": "cf0ac5757be3b3ab87965ec4a03e450367e5f97d92d813fd35fd0d1667627d47"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/CFG/Main.dat": {
+    "size": 1000,
+    "sha256": "440548823b92914e04273b5696286a0c7d3d21ad21208f60f3b8596699e61d31"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/CFG/Rus/Lang.dat": {
+    "size": 7301,
+    "sha256": "16349f0c8d1eae72b7d14c7c3b7eb74bd4fbaff2d5ce92cbd26c1035dfa01df6"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/Data/Image/AutopilotA.gi": {
+    "size": 11070,
+    "sha256": "da556a30adbe0e08421e3b1a95e4e0c2affb37544801c7adb4dc43eebb780441"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/Data/Image/AutopilotD.gi": {
+    "size": 11185,
+    "sha256": "025badfebe38053930b8c11add3a1498ee5c2cbd1192d49b79482395bde87bec"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/Data/Image/AutopilotN.gi": {
+    "size": 11185,
+    "sha256": "a702681976b01cd1d267da71ca10f998bedd797ef85c4316680c56482460245d"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/Data/Image/RouteFrame.gi": {
+    "size": 94824,
+    "sha256": "73c3017a0cbb67668e37c8b698d59e8275719f87e913731e843f69b828b34bc2"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/ModuleInfo.txt": {
+    "size": 757,
+    "sha256": "0907eabf37e991663cc13724159d743e32307ed1a94c564773594222d1e71bc7"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/SOURCE/CacheData.txt": {
+    "size": 303,
+    "sha256": "bd25eb9ad3803732af106d2c7bb65cd57b26828ccd86ca34b13e6c2cea405bdf"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/SOURCE/Lang.txt": {
+    "size": 26546,
+    "sha256": "d9e872f243b3d689d4d573bb3b92f8bbde89245629552c55283961c6456721aa"
+  },
+  "Mods/FHD_MODS/FHD_Navigator/SOURCE/Main.txt": {
+    "size": 5999,
+    "sha256": "08df771c81708bf5113cf67e9765a9a3ee75a3a9ac2941f5455f22e8a16ffe2c"
+  }
+}

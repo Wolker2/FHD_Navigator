@@ -1,0 +1,1892 @@
+{
+  "format": "blockpar",
+  "seed": 1369621460,
+  "root": {
+    "entries": [
+      {
+        "kind": "block",
+        "name": "Help",
+        "value": {
+          "entries": [
+            {
+              "kind": "parameter",
+              "name": "FHDNavigatorRoute",
+              "value": "Примерное время до последней системы маршрута: гиперпереходы, полёт внутри систем и необходимые дозаправки. Каждая дозаправка в космосе: подлёт, день посадки, день взлёта и вылет к переходу. Старт с планеты или станции: ещё один день взлёта. Заправка до полного бака. Полёт по прямой, по текущим координатам планет и станций; бои и посадка в конечной системе не включены."
+            },
+            {
+              "kind": "parameter",
+              "name": "FHDNavigatorAutopilot",
+              "value": "Запустить Автопилот по системам выбранного маршрута."
+            }
+          ],
+          "sorted": false
+        }
+      },
+      {
+        "kind": "block",
+        "name": "Script",
+        "value": {
+          "entries": [
+            {
+              "kind": "block",
+              "name": "FHDNavigator",
+              "value": {
+                "entries": [
+                  {
+                    "kind": "block",
+                    "name": "Update",
+                    "value": {
+                      "entries": [
+                        {
+                          "kind": "parameter",
+                          "name": "000",
+                          "value": "function NavPart(str text,int number){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "001",
+                          "value": "int k=0;int p=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "002",
+                          "value": "while(k<number){p=findsubstr(text,'|');if(p<0){result='';exit;}text=substr(text,p+1);k=k+1;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "003",
+                          "value": "p=findsubstr(text,'|');if(p>=0)text=substr(text,0,p);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "004",
+                          "value": "result=text;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "005",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "006",
+                          "value": "function NavCount(str text){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "007",
+                          "value": "int n=0;int i=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "008",
+                          "value": "if(text!='')n=1;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "009",
+                          "value": "for(i=0;i<count(text);i=i+1){if(substr(text,i,1)==','){n=n+1;}}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "010",
+                          "value": "result=n;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "011",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "012",
+                          "value": "function NavIndex(str text,int number){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "013",
+                          "value": "int k=0;int p=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "014",
+                          "value": "while(k<number){p=findsubstr(text,',');if(p<0){result=-1;exit;}text=substr(text,p+1);k=k+1;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "015",
+                          "value": "p=findsubstr(text,',');if(p>=0)text=substr(text,0,p);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "016",
+                          "value": "if(text==''){result=-1;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "017",
+                          "value": "int value=text;result=value;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "018",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "019",
+                          "value": "function NavDrop(str text){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "020",
+                          "value": "int i=0;int p=-1;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "021",
+                          "value": "for(i=0;i<count(text);i=i+1){if(substr(text,i,1)==','){p=i;}}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "022",
+                          "value": "if(p<0){result='';exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "023",
+                          "value": "result=substr(text,0,p);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "024",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "025",
+                          "value": "function NavDistance(int a,int b){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "026",
+                          "value": "result=round(sqrt(Dist2Star(GalaxyStar(a),GalaxyStar(b))));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "027",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "028",
+                          "value": "function NavTotal(int origin,str text){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "029",
+                          "value": "int n=NavCount(text);int last=origin;int total=0;int i=0;int next=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "030",
+                          "value": "if(n<1 || n>256){result=-1;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "031",
+                          "value": "for(i=0;i<n;i=i+1){next=NavIndex(text,i);if(next<0 || next>=GalaxyStars()){result=-1;exit;}total=total+NavDistance(last,next);last=next;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "032",
+                          "value": "result=total;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "033",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "034",
+                          "value": "function NavRadius(dword star){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "035",
+                          "value": "int n=StarPlanets(star);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "036",
+                          "value": "if(n<1){result=-1;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "037",
+                          "value": "dword planet=StarPlanets(star,n-1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "038",
+                          "value": "result=round(PlanetOrbitRadius(planet)+PlanetSize(planet)+800);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "039",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "040",
+                          "value": "function NavShow(str text){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "041",
+                          "value": "InterfaceText('Galaxy','FHDQuestRouteInfo',text);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "042",
+                          "value": "InterfaceState('Galaxy','FHDQuestRouteInfo',1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "043",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "044",
+                          "value": "function NavClear(){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "044a",
+                          "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.SetAutopilotButton'),'showButton',0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "045",
+                          "value": "str currentText=UICheckElement('Galaxy','FHDQuestRouteInfo','Text');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "046",
+                          "value": "if(currentText=='' || findsubstr(currentText,'Полёт:')==0 || findsubstr(currentText,'Время полёта:')==0){NavShow('');}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "047",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "048",
+                          "value": "function NavCeil(float value){int rounded=value;if(value>rounded)rounded=rounded+1;result=rounded;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "049",
+                          "value": "function NavHyper(float length,int boost){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "050",
+                          "value": "int counter=max(2,round(length*0.1)+1);int days=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "051",
+                          "value": "while(counter>0){counter=counter-1;if(counter>1){counter=counter-boost;if(counter<1)counter=1;}days=days+1;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "052",
+                          "value": "result=days;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "053",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "054",
+                          "value": "function NavPort(dword star,dword ship,float x,float y,float dx,float dy){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "055",
+                          "value": "dword port=0;dword candidate=0;int i=0;int owner=0;int kind=0;int standing=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "056",
+                          "value": "float best=1.0e20;float distance=0.0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "057",
+                          "value": "for(i=0;i<StarPlanets(star);i=i+1){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "058",
+                          "value": "candidate=StarPlanets(star,i);owner=PlanetOwner(candidate);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "059",
+                          "value": "if(!((owner>=0 && owner<=4) || owner==7))continue;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "060",
+                          "value": "if(GetRelationPlanet(candidate,ship)<10)continue;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "061",
+                          "value": "distance=sqrt(sqr(CoordX(candidate)-x)+sqr(CoordY(candidate)-y))+sqrt(sqr(dx-CoordX(candidate))+sqr(dy-CoordY(candidate)));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "062",
+                          "value": "if(distance<best){best=distance;port=candidate;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "063",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "064",
+                          "value": "for(i=0;i<StarRuins(star);i=i+1){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "065",
+                          "value": "candidate=StarRuins(star,i);kind=ShipTypeN(candidate);standing=ShipStanding(candidate);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "066",
+                          "value": "if(kind<6 || kind>11 || standing<2 || standing>6)continue;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "067",
+                          "value": "if(ShipGetBad(candidate)==ship)continue;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "068",
+                          "value": "distance=sqrt(sqr(CoordX(candidate)-x)+sqr(CoordY(candidate)-y))+sqrt(sqr(dx-CoordX(candidate))+sqr(dy-CoordY(candidate)));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "069",
+                          "value": "if(distance<best){best=distance;port=candidate;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "070",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "071",
+                          "value": "result=port;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "072",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "073",
+                          "value": "function NavSegment(int current,str route,int first,float x,float y,int speed,int fuel,int capacity,int regen,int boost){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "074",
+                          "value": "int i=0;int next=0;int cost=0;int fly=0;int countRoute=NavCount(route);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "075",
+                          "value": "dword a=0;dword b=0;float ra=0.0;float rb=0.0;float dx=0.0;float dy=0.0;float length=0.0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "076",
+                          "value": "float px=0.0;float py=0.0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "077",
+                          "value": "for(i=first;i<countRoute;i=i+1){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "078",
+                          "value": "next=NavIndex(route,i);if(next==current)continue;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "079",
+                          "value": "a=GalaxyStar(current);b=GalaxyStar(next);ra=NavRadius(a);rb=NavRadius(b);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "080",
+                          "value": "if(ra<0 || rb<0){result=0;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "081",
+                          "value": "dx=CoordX(b)-CoordX(a);dy=CoordY(b)-CoordY(a);length=sqrt(sqr(dx)+sqr(dy));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "082",
+                          "value": "if(length<=0.0){result=0;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "083",
+                          "value": "cost=round(length);if(cost>ShipJump(Player()) || cost>max(capacity,fuel)){result=0;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "084",
+                          "value": "px=dx/length*(ra-400);py=dy/length*(ra-400);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "085",
+                          "value": "fly=NavCeil(sqrt(sqr(px-x)+sqr(py-y))/speed);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "086",
+                          "value": "if(fuel<capacity)fuel=min(capacity,fuel+regen*(fly+1));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "087",
+                          "value": "if(fuel<cost){result=0;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "088",
+                          "value": "fuel=fuel-cost;if(fuel<capacity)fuel=min(capacity,fuel+regen*NavHyper(length,boost));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "089",
+                          "value": "x=-dx/length*(rb-300);y=-dy/length*(rb-300);current=next;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "090",
+                          "value": "if(i==countRoute-1){result=1;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "091",
+                          "value": "if(NavPort(b,Player(),x,y,x,y)){result=1;exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "092",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "093",
+                          "value": "result=1;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "094",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "095",
+                          "value": "function NavCalculate(int origin,str route){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "096",
+                          "value": "dword ship=Player();int speed=ShipSpeed(ship);int n=NavCount(route);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "097",
+                          "value": "if(speed<=0){NavShow('Время полёта: корабль не может двигаться');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "098",
+                          "value": "if(ShipInHyperSpace(ship)){NavShow('');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "099",
+                          "value": "dword tank=ShipEqInSlot(ship,t_FuelTanks);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "100",
+                          "value": "if(!tank){NavShow('Время полёта: нет топливного бака');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "101",
+                          "value": "int fuel=ShipFuel(ship);int capacity=GetEquipmentStats(tank,0);int regen=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "102",
+                          "value": "if(capacity<=0){NavShow('Время полёта: нет ёмкости для топлива');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "103",
+                          "value": "int goo=ArtefactTypeInUse(ship,t_ArtefactFuel);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "104",
+                          "value": "if(goo>0){regen=goo*(int(CT('Artefacts.NumericValues.kArtefactFuel'))+int(CT('Artefacts.NumericValues.kArtefactFuelEx'))*ArtefactTypeBoosted(ship,t_ArtefactFuel));}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "105",
+                          "value": "int boost=ArtefactTypeInUse(ship,t_ArtGiperJump)*(1+ArtefactTypeBoosted(ship,t_ArtGiperJump));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "106",
+                          "value": "float x=CoordX(ship);float y=CoordY(ship);int days=0;int refuels=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "107",
+                          "value": "dword planet=GetShipPlanet(ship);dword station=GetShipRuins(ship);dword dock=planet;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "108",
+                          "value": "if(!dock)dock=station;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "109",
+                          "value": "if(dock){x=CoordX(dock);y=CoordY(dock);days=1;if(fuel<capacity)fuel=min(capacity,fuel+regen);}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "110",
+                          "value": "int current=origin;int i=0;int next=0;int fly=0;int jumps=0;int cost=0;int hyper=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "111",
+                          "value": "dword a=0;dword b=0;dword port=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "112",
+                          "value": "float ra=0.0;float rb=0.0;float dx=0.0;float dy=0.0;float length=0.0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "113",
+                          "value": "float departureX=0.0;float departureY=0.0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "114",
+                          "value": "for(i=0;i<n;i=i+1){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "115",
+                          "value": "next=NavIndex(route,i);if(next==current)continue;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "116",
+                          "value": "a=GalaxyStar(current);b=GalaxyStar(next);ra=NavRadius(a);rb=NavRadius(b);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "117",
+                          "value": "if(ra<0 || rb<0){NavShow('Время полёта: нет данных о размере системы');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "118",
+                          "value": "dx=CoordX(b)-CoordX(a);dy=CoordY(b)-CoordY(a);length=sqrt(sqr(dx)+sqr(dy));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "119",
+                          "value": "if(length<=0.0){NavShow('');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "120",
+                          "value": "cost=round(length);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "121",
+                          "value": "if(cost>ShipJump(ship) || cost>max(capacity,fuel)){NavShow('Время полёта: участок превышает дальность или бак');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "122",
+                          "value": "departureX=dx/length*(ra-400);departureY=dy/length*(ra-400);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "123",
+                          "value": "port=NavPort(a,ship,x,y,departureX,departureY);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "124",
+                          "value": "if(i==0 && dock)port=dock;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "125",
+                          "value": "if(port && !NavSegment(current,route,i,x,y,speed,fuel,capacity,regen,boost)){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "126",
+                          "value": "if(!NavSegment(current,route,i,x,y,speed,capacity,capacity,regen,boost)){NavShow('Время полёта: не хватает топлива до следующей заправки');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "127",
+                          "value": "if(!(i==0 && dock)){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "128",
+                          "value": "fly=NavCeil(sqrt(sqr(CoordX(port)-x)+sqr(CoordY(port)-y))/speed);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "129",
+                          "value": "days=days+fly+2;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "130",
+                          "value": "x=CoordX(port);y=CoordY(port);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "131",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "132",
+                          "value": "fuel=capacity;refuels=refuels+1;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "133",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "134",
+                          "value": "fly=NavCeil(sqrt(sqr(departureX-x)+sqr(departureY-y))/speed);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "135",
+                          "value": "if(fuel<capacity)fuel=min(capacity,fuel+regen*(fly+1));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "136",
+                          "value": "if(fuel<cost){NavShow('Время полёта: нужна заправка, нет доступного пункта');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "137",
+                          "value": "days=days+fly+1;fuel=fuel-cost;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "138",
+                          "value": "hyper=NavHyper(length,boost);days=days+hyper;if(fuel<capacity)fuel=min(capacity,fuel+regen*hyper);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "139",
+                          "value": "x=-dx/length*(rb-300);y=-dy/length*(rb-300);current=next;jumps=jumps+1;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "140",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "141",
+                          "value": "str text='Полёт: ~ ';text=text+days;text=text+' дн. | Прыжков: ';text=text+jumps;text=text+' | Заправок: ';text=text+refuels;NavShow(text);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "142",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "142a",
+                          "value": "function NavAutopilotButton(dword ship){int showAuto=0;if(!ShipInHyperSpace(ship) && BlockExist('Script.FHDAutopilot.Run') && BlockExist('Script.FHDAutopilot.InitController') && BlockExist('Script.FHDAutopilot.FindNextHop') && !(InterfaceState('Galaxy','FHDAutopilotMapAccept')==1))showAuto=1;ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.SetAutopilotButton'),'showButton',showAuto);}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "143",
+                          "value": "function NavUpdate(){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "144",
+                          "value": "if(CurrentForm()!='Galaxy')exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "145",
+                          "value": "dword ship=Player();if(!ship)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "146",
+                          "value": "int mapWidth=UICheckElement('Galaxy','Map','SizeX');int mapHeight=UICheckElement('Galaxy','Map','SizeY');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "147",
+                          "value": "if(UICheckElement('Galaxy','FHDNavigatorMapObserver','SizeX')!=mapWidth || UICheckElement('Galaxy','FHDNavigatorMapObserver','SizeY')!=mapHeight){InterfaceSize('Galaxy','FHDNavigatorMapObserver',mapWidth,mapHeight);}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "148",
+                          "value": "InterfacePos('Galaxy','FHDNavigatorMapObserver',UICheckElement('Galaxy','Map','PosX'),UICheckElement('Galaxy','Map','PosY'),-50);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "149",
+                          "value": "str distanceText=UICheckElement('Galaxy','Distance','Text');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "150",
+                          "value": "if(distanceText=='' || !UICheckElement('Galaxy','PathDesPos','IsActive')){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "151",
+                          "value": "InterfaceText('Galaxy','FHDNavigatorState','');NavClear();exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "152",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "153",
+                          "value": "int total=distanceText;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "154",
+                          "value": "int firstX=UICheckElement('Galaxy','PathDesPos','PosX');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "155",
+                          "value": "int firstY=UICheckElement('Galaxy','PathDesPos','PosY');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "156",
+                          "value": "int lastX=UICheckElement('Galaxy','Distance','PosX')-15;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "157",
+                          "value": "float lastY=UICheckElement('Galaxy','Distance','PosY')+int(UICheckElement('Galaxy','Distance','SizeY')/2);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "158",
+                          "value": "str signature='';signature=signature+Id(ShipStar(ship));signature=signature+':';signature=signature+CurTurn();signature=signature+':';signature=signature+ShipSpeed(ship);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "159",
+                          "value": "signature=signature+':';signature=signature+ArtefactTypeInUse(ship,t_ArtGiperJump);signature=signature+':';signature=signature+ArtefactTypeBoosted(ship,t_ArtGiperJump);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "160",
+                          "value": "signature=signature+':';signature=signature+ShipFuel(ship);signature=signature+':';signature=signature+GetShipPlanet(ship);signature=signature+':';signature=signature+GetShipRuins(ship);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "161",
+                          "value": "signature=signature+':';signature=signature+CoordX(ship);signature=signature+':';signature=signature+CoordY(ship);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "162",
+                          "value": "signature=signature+':';signature=signature+ShipJump(ship);signature=signature+':';signature=signature+GetEquipmentStats(ShipEqInSlot(ship,t_FuelTanks),0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "163",
+                          "value": "signature=signature+':';signature=signature+ArtefactTypeInUse(ship,t_ArtefactFuel);signature=signature+':';signature=signature+ArtefactTypeBoosted(ship,t_ArtefactFuel);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "164",
+                          "value": "signature=signature+':';signature=signature+total;signature=signature+':';signature=signature+firstX;signature=signature+':';signature=signature+firstY;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "165",
+                          "value": "signature=signature+':';signature=signature+lastX;signature=signature+':';signature=signature+lastY;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "166",
+                          "value": "str state=InterfaceText('Galaxy','FHDNavigatorState');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "167",
+                          "value": "if(NavPart(state,2)==signature){NavAutopilotButton(ship);exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "168",
+                          "value": "int origin=-1;int first=-1;int last=-1;int firstHits=0;int lastHits=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "169",
+                          "value": "int stars=GalaxyStars();int i=0;int sx=0;int sy=0;dword star=0;str key='';"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "170",
+                          "value": "if(stars<1 || stars>16384){NavClear();InterfaceText('Galaxy','FHDNavigatorState','');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "171",
+                          "value": "for(i=0;i<stars;i=i+1){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "172",
+                          "value": "star=GalaxyStar(i);if(star==ShipStar(ship))origin=i;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "173",
+                          "value": "if(!SectorVisible(StarToCon(star)))continue;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "174",
+                          "value": "key='gs_';key=key+Id(star);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "175",
+                          "value": "sx=UICheckElement('Galaxy',key,'PosX');sy=UICheckElement('Galaxy',key,'PosY');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "176",
+                          "value": "if(sx==firstX && sy==firstY){first=i;firstHits=firstHits+1;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "177",
+                          "value": "if(sx==lastX && abs(sy-lastY)<=1){last=i;lastHits=lastHits+1;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "178",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "179",
+                          "value": "if(origin<0 || firstHits!=1 || lastHits!=1){NavClear();InterfaceText('Galaxy','FHDNavigatorState','');exit;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "180",
+                          "value": "str route=NavPart(state,1);int oldOrigin=-1;str oldOriginText=NavPart(state,0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "181",
+                          "value": "if(oldOriginText!='')oldOrigin=oldOriginText;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "182",
+                          "value": "int n=NavCount(route);int previousTotal=-1;int previousLast=-1;str shorter='';"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "183",
+                          "value": "if(oldOrigin==origin && n>0 && NavIndex(route,0)==first){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "184",
+                          "value": "previousTotal=NavTotal(origin,route);previousLast=NavIndex(route,n-1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "185",
+                          "value": "if(last==first && total==NavDistance(origin,first)){route='';route=route+first;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "186",
+                          "value": "else if(previousTotal==total && previousLast==last){}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "187",
+                          "value": "else if(n>1 && NavIndex(route,n-2)==last && previousTotal-NavDistance(last,previousLast)==total)route=NavDrop(route);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "188",
+                          "value": "else if(previousLast!=last && previousTotal+NavDistance(previousLast,last)==total){route=route+',';route=route+last;}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "189",
+                          "value": "else route='';"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "190",
+                          "value": "}else{"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "191",
+                          "value": "route='';if(first==last && total==NavDistance(origin,first))route=route+first;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "192",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "193",
+                          "value": "if(route=='' || NavCount(route)>256 || NavTotal(origin,route)!=total){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "194",
+                          "value": "InterfaceText('Galaxy','FHDNavigatorState','');NavClear();exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "195",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "196",
+                          "value": "str saved='';saved=saved+origin;saved=saved+'|';saved=saved+route;saved=saved+'|';saved=saved+signature;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "197",
+                          "value": "InterfaceText('Galaxy','FHDNavigatorState',saved);NavCalculate(origin,route);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "197a",
+                          "value": "NavAutopilotButton(ship);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "198",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "199",
+                          "value": "NavUpdate();"
+                        }
+                      ],
+                      "sorted": false
+                    }
+                  },
+                  {
+                    "kind": "block",
+                    "name": "LaunchAutopilot",
+                    "value": {
+                      "entries": [
+                        {
+                          "kind": "parameter",
+                          "name": "0000",
+                          "value": "if(CurrentForm()!='Galaxy' || !Player() || FilmFlags(0) || IsFilm())exit;if(InterfaceState('Galaxy','FHDAutopilotMapAccept')==1 || UICheckElement('Galaxy','FHDNavigatorAutopilotOpen','IsActive'))exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0001",
+                          "value": "if(!(BlockExist('Script.FHDAutopilot.Run') && BlockExist('Script.FHDAutopilot.InitController') && BlockExist('Script.FHDAutopilot.FindNextHop'))){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0002",
+                          "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.SetAutopilotButton'),'showButton',0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0003",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0004",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0005",
+                          "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0006",
+                          "value": "str navState=InterfaceText('Galaxy','FHDNavigatorState');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0007",
+                          "value": "int firstSeparator=findsubstr(navState,'|');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0008",
+                          "value": "if(firstSeparator<1){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0009",
+                          "value": "MessageBox('Проложите маршрут на карте галактики.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0010",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0011",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0012",
+                          "value": "int mapOrigin=substr(navState,0,firstSeparator);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0013",
+                          "value": "str mapRoute=substr(navState,firstSeparator+1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0014",
+                          "value": "int routeEnd=findsubstr(mapRoute,'|');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0015",
+                          "value": "if(routeEnd<1)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0016",
+                          "value": "mapRoute=substr(mapRoute,0,routeEnd);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0017",
+                          "value": "int launchOk=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.StartAutopilot'),'mapOrigin',mapOrigin,'mapRoute',mapRoute,'result');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0018",
+                          "value": "if(launchOk){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0019",
+                          "value": "InterfaceText('Galaxy','FHDNavigatorState','');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0020",
+                          "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.SetAutopilotButton'),'showButton',0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0021",
+                          "value": "}"
+                        }
+                      ],
+                      "sorted": false
+                    }
+                  },
+                  {
+                    "kind": "block",
+                    "name": "SetAutopilotButton",
+                    "value": {
+                      "entries": [
+                        {
+                          "kind": "parameter",
+                          "name": "0000",
+                          "value": "if(CurrentForm()!='Galaxy')exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0001",
+                          "value": "int wasVisible=UICheckElement('Galaxy','FHDNavigatorAutopilot','IsActive');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0002",
+                          "value": "if(!showButton){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0003",
+                          "value": "if(wasVisible)InterfaceState('Galaxy','FHDNavigatorAutopilot',0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0004",
+                          "value": "if(InterfaceState('Galaxy','FHDNavigatorAutopilotOpen')==1 || UICheckElement('Galaxy','FHDNavigatorAutopilotOpen','IsActive'))InterfaceState('Galaxy','FHDNavigatorAutopilotOpen',0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0005",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0006",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0007",
+                          "value": "if(wasVisible)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0008",
+                          "value": "InterfaceImage('Galaxy','FHDNavigatorAutopilotOpen','Bm.FormGalaxy2.2Anim');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0009",
+                          "value": "InterfaceState('Galaxy','FHDNavigatorAutopilotOpen',1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0010",
+                          "value": "InterfaceState('Galaxy','FHDNavigatorAutopilot',1);"
+                        }
+                      ],
+                      "sorted": false
+                    }
+                  },
+                  {
+                    "kind": "block",
+                    "name": "StartAutopilot",
+                    "value": {
+                      "entries": [
+                        {
+                          "kind": "parameter",
+                          "name": "0000",
+                          "value": "int result=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0001",
+                          "value": "if(CurrentForm()!='Galaxy' || !Player() || FilmFlags(0) || IsFilm())exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0002",
+                          "value": "if(ShipInHyperSpace(Player()) || ShipIsTakeoff(Player())){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0003",
+                          "value": "MessageBox('Дождитесь окончания прыжка или взлёта.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0004",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0005",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0006",
+                          "value": "dword currentStar=ShipStar(Player());"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0007",
+                          "value": "if(!currentStar || currentStar!=GalaxyStar(mapOrigin) || mapRoute==''){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0008",
+                          "value": "MessageBox('Маршрут устарел. Проложите его заново.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0009",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0010",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0011",
+                          "value": "if(NoJump()){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0012",
+                          "value": "MessageBox('Игра сейчас запрещает гиперпрыжки.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0013",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0014",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0015",
+                          "value": "int jumpRange=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.GetJumpRange'),'result');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0016",
+                          "value": "if(ShipSpeed(Player())<1 || jumpRange<1){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0017",
+                          "value": "MessageBox('Двигатель, топливный бак или скорость корабля не позволяют начать перелёт.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0018",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0019",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0020",
+                          "value": "if(ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.OtherControllerActive'),'result')){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0021",
+                          "value": "MessageBox('Сначала отключите управление AutoBot.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0022",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0023",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0024",
+                          "value": "dword dockPlanet=GetShipPlanet(Player());"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0025",
+                          "value": "dword dockStation=GetShipRuins(Player());"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0026",
+                          "value": "int docked=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0027",
+                          "value": "if(dockPlanet || dockStation)docked=1;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0028",
+                          "value": "if(!docked && !ShipInNormalSpace(Player()))exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0029",
+                          "value": "str route='';"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0030",
+                          "value": "int finalStarId=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0031",
+                          "value": "int prevId=Id(currentStar);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0032",
+                          "value": "dword prevStar=currentStar;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0033",
+                          "value": "int pointCount=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0034",
+                          "value": "int firstJumpFuel=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0035",
+                          "value": "while(count(mapRoute)){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0036",
+                          "value": "pointCount=pointCount+1;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0037",
+                          "value": "if(pointCount>256)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0038",
+                          "value": "int comma=findsubstr(mapRoute,',');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0039",
+                          "value": "str token=mapRoute;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0040",
+                          "value": "if(comma>=0){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0041",
+                          "value": "token=substr(mapRoute,0,comma);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0042",
+                          "value": "mapRoute=substr(mapRoute,comma+1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0043",
+                          "value": "if(mapRoute=='')exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0044",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0045",
+                          "value": "else mapRoute='';"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0046",
+                          "value": "if(count(token)<1 || count(token)>5)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0047",
+                          "value": "int digit=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0048",
+                          "value": "for(digit=0;digit<count(token);digit=digit+1){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0049",
+                          "value": "if(findsubstr('0123456789',substr(token,digit,1))<0)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0050",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0051",
+                          "value": "int pointIndex=token;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0052",
+                          "value": "dword target=GalaxyStar(pointIndex);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0053",
+                          "value": "if(!target)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0054",
+                          "value": "int pointId=Id(target);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0055",
+                          "value": "if(pointId<1 || GalaxyStar(pointId-1)!=target)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0056",
+                          "value": "if(pointId==prevId)continue;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0057",
+                          "value": "if(!ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.IsRouteStarAllowed'),'star',target,'result')){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0058",
+                          "value": "MessageBox('Автопилот не может пройти через систему '+StarName(target)+'. Доступны открытые системы Коалиции и пиратов.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0059",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0060",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0061",
+                          "value": "dword nextHop=target;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0062",
+                          "value": "int distance=round(sqrt(Dist2Star(prevStar,target)));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0063",
+                          "value": "if(!finalStarId || distance<1 || jumpRange<distance){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0064",
+                          "value": "nextHop=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.FindNextHop'),'start_id',prevId,'target_id',pointId,'jump_range',jumpRange,'result');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0065",
+                          "value": "if(!nextHop){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0066",
+                          "value": "MessageBox('Нет безопасного маршрута из системы '+StarName(prevStar)+' в систему '+StarName(target)+'.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0067",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0068",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0069",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0070",
+                          "value": "if(!finalStarId)firstJumpFuel=round(sqrt(Dist2Star(currentStar,nextHop)));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0071",
+                          "value": "if(count(route))route=route+',';"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0072",
+                          "value": "route=route+pointId;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0073",
+                          "value": "prevStar=target;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0074",
+                          "value": "prevId=pointId;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0075",
+                          "value": "finalStarId=pointId;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0076",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0077",
+                          "value": "if(!finalStarId)exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0078",
+                          "value": "if(ShipFuel(Player())<firstJumpFuel && !ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.FindServiceObject'),'result')){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0079",
+                          "value": "MessageBox('Для первого прыжка не хватает топлива. В текущей системе нет безопасной дозаправки.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0080",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0081",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0082",
+                          "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.Ensure'));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0083",
+                          "value": "int previousStatus=ShipCustomShipInfoData(Player(),'FHDAutopilotCore',1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0084",
+                          "value": "if(previousStatus==1 || previousStatus==2){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0085",
+                          "value": "if(!MessageBoxYesNo('Заменить сохранённый маршрут Автопилота маршрутом Навигатора?'))exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0086",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0087",
+                          "value": "if(!ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.InitController'),'result')){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0088",
+                          "value": "MessageBox('Не удалось запустить обработчик Автопилота.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0089",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0090",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0091",
+                          "value": "if(previousStatus)ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.HardReset'));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0092",
+                          "value": "str landing='A';"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0093",
+                          "value": "ShipCustomShipInfoData(Player(),'FHDAutopilotCore',2,finalStarId);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0094",
+                          "value": "ShipCustomShipInfoData(Player(),'FHDAutopilotCore',3,HullHP(Player()));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0095",
+                          "value": "ShipCustomShipInfoTextData(Player(),'FHDAutopilotCore',1,route);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0096",
+                          "value": "ShipCustomShipInfoTextData(Player(),'FHDAutopilotCore',2,landing);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0097",
+                          "value": "ShipCustomShipInfoTextData(Player(),'FHDAutopilotCore',3,'0');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0098",
+                          "value": "ShipCustomShipInfoData(Player(),'FHDAutopilotMem',1,0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0099",
+                          "value": "ShipCustomShipInfoData(Player(),'FHDAutopilotMem',2,0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0100",
+                          "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.ClearServiceSnapshot'));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0101",
+                          "value": "OrderLock(Player(),0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0102",
+                          "value": "FilmFlags(2,0);FilmFlags(3,0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0103",
+                          "value": "ShipCustomShipInfoData(Player(),'FHDAutopilotPauseRequest',1,0);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0104",
+                          "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.ClearRuntime'));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0105",
+                          "value": "if(docked){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0106",
+                          "value": "int canService=0;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0107",
+                          "value": "if(dockPlanet)canService=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.IsSafePlanet'),'planet',dockPlanet,'result');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0108",
+                          "value": "else if(dockStation)canService=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.IsSafeStation'),'station',dockStation,'result');"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0109",
+                          "value": "if(canService && !ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.Service'),'result')){"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0110",
+                          "value": "ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDAutopilot.HardReset'));"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0111",
+                          "value": "MessageBox('Автопилот не запущен: не хватило средств на обслуживание.',40);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0112",
+                          "value": "exit;"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0113",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0114",
+                          "value": "ShipCustomShipInfoData(Player(),'FHDAutopilotMem',1,1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0115",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0116",
+                          "value": "ShipCustomShipInfoData(Player(),'FHDAutopilotCore',1,1);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0117",
+                          "value": "if(docked)ExtremalTakeOff();"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0118",
+                          "value": "else{"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0119",
+                          "value": "OrderNone(Player());"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0120",
+                          "value": "ForceNextDay();"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0121",
+                          "value": "}"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0122",
+                          "value": "ScriptActionsRun();"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0123",
+                          "value": "str nextForm=FormChange();"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0124",
+                          "value": "if(nextForm!='')FormChange(nextForm);"
+                        },
+                        {
+                          "kind": "parameter",
+                          "name": "0125",
+                          "value": "result=1;"
+                        }
+                      ],
+                      "sorted": false
+                    }
+                  }
+                ],
+                "sorted": false
+              }
+            }
+          ],
+          "sorted": false
+        }
+      }
+    ],
+    "sorted": false
+  }
+}

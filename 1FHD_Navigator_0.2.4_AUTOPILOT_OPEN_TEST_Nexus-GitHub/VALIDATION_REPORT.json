@@ -1,0 +1,15 @@
+{
+  "version": "0.2.4_AUTOPILOT_OPEN_TEST",
+  "original_zip_sha256": "32e6896708c0ecff507570b79d5bfc3f52b9955654c8501acb3fa91c54b6fa60",
+  "game_files": 11,
+  "source_and_editable_files": 15,
+  "original_txt_files": 3,
+  "dat_json_files": 3,
+  "original_gi_files": 4,
+  "editable_png_files": 4,
+  "dll_present": false,
+  "game_tested": false,
+  "clean_rebuild_byte_exact": true,
+  "dat_roundtrip_byte_exact": true,
+  "module_info_cp1251_roundtrip": true
+}

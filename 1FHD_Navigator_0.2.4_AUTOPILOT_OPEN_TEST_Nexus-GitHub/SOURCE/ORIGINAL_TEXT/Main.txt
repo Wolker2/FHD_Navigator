@@ -1,0 +1,142 @@
+BV ~{
+    OnLoad ~{
+        FHDNavigatorReset ~{
+            000=InterfaceState('Galaxy','FHDNavigatorAutopilot',0);InterfaceState('Galaxy','FHDNavigatorAutopilotOpen',0);InterfaceText('Galaxy','FHDNavigatorState','');InterfaceText('Galaxy','FHDQuestRouteInfo','');
+        }
+    }
+    OnStart ~{
+        FHDNavigatorReset ~{
+            000=InterfaceState('Galaxy','FHDNavigatorAutopilot',0);InterfaceState('Galaxy','FHDNavigatorAutopilotOpen',0);InterfaceText('Galaxy','FHDNavigatorState','');InterfaceText('Galaxy','FHDQuestRouteInfo','');
+        }
+    }
+}
+ML ~{
+    Galaxy ~{
+        Panel ~{
+            Panel ~{
+            }
+            Panel ~{
+                Panel ~{
+                    Panel ~{
+                        OnMouseEnterCode ~{
+                            990=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));
+                        }
+                    }
+                    FHDNavigatorInput ~{
+                        GraphButton ~{
+                            Name=FHDNavigatorMapObserver
+                            Active=True
+                            Kind=Normal
+                            KindHit=Rect
+                            Pos=0,0,-50
+                            Size=768,527
+                            MouseBlocking=False
+                            MouseBlockingTest=False
+                            OnPressCode ~{
+                                990=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));
+                            }
+                            OnMouseEnterCode ~{
+                                990=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));
+                            }
+                        }
+                    }
+                }
+                GraphButton ~{
+                }
+                GraphButton ~{
+                    OnPressCode ~{
+                        990=InterfaceState('Galaxy','FHDNavigatorAutopilot',0);InterfaceState('Galaxy','FHDNavigatorAutopilotOpen',0);InterfaceText('Galaxy','FHDNavigatorState','');
+                    }
+                }
+                GraphButton ~{
+                }
+                GraphButton ~{
+                    OnPressCode ~{
+                        990=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));
+                    }
+                }
+                GraphButton ~{
+                    OnPressCode ~{
+                        990=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));
+                    }
+                }
+                FHDQuestRouteOverlay ~{
+                    Image ~{
+                        Active=True
+                        Image=GI,Bm.FHDNavigator.RouteFrame
+                        MouseBlocking=False
+                        MouseBlockingTest=False
+                        Name=FHDQuestRouteFrame
+                        Pos=31,636,0
+                        Size=758,47
+                    }
+                    Label ~{
+                        Active=False
+                        AlignX=Center
+                        AlignY=CenterEx
+                        Font=Font.2SmallBold
+                        Help=Help.FHDNavigatorRoute
+                        MouseBlocking=False
+                        MouseBlockingTest=False
+                        Name=FHDQuestRouteInfo
+                        Pos=120,652,-3
+                        Size=450,24
+                        TextColor=0,255,0
+                        WordWrap=True
+                    }
+                }
+                FHDNavigatorStateStore ~{
+                    Label ~{
+                        Name=FHDNavigatorState
+                        Active=False
+                        Font=Font.2SmallBold
+                        Pos=0,0,0
+                        Size=1,1
+                        MouseBlocking=False
+                        MouseBlockingTest=False
+                    }
+                }
+                Size=810,704
+                FHDNavigatorAutopilotControl ~{
+                    GraphButton ~{
+                        Active=False
+                        Help=Help.FHDNavigatorAutopilot
+                        ImageDown=GI,Bm.FHDNavigator.SlotD
+                        ImageNormal=GI,Bm.FHDNavigator.SlotN
+                        ImageNormalA=GI,Bm.FHDNavigator.SlotA
+                        Kind=Normal
+                        KindHit=Graph
+                        MouseBlocking=True
+                        MouseBlockingTest=False
+                        Name=FHDNavigatorAutopilot
+                        Pos=182,565,-4
+                        Size=96,37
+                        Style=Style.GB.SoundNormal
+                        UpOnlyDown=True
+                        OnPressCode ~{
+                            00=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.LaunchAutopilot'));
+                        }
+                    }
+                    GAI ~{
+                        Name=FHDNavigatorAutopilotOpen
+                        Active=False
+                        Image=Bm.FormGalaxy2.2Anim
+                        Pos=182,565,-5
+                        Size=96,37
+                        Frame=[50,0-6]
+                        FrameLoad=0
+                        StopAfterOneCycle=True
+                        MouseBlocking=False
+                        MouseBlockingTest=False
+                    }
+                }
+                OnMouseEnterCode ~{
+                    990=ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));
+                }
+            }
+            OnKey ~{
+                990=if(KEYMOD==0 && (KEY==27 || KEY==77)){InterfaceState('Galaxy','FHDNavigatorAutopilot',0);InterfaceState('Galaxy','FHDNavigatorAutopilotOpen',0);InterfaceText('Galaxy','FHDNavigatorState','');exit;}ExecuteCodeFromString(GenerateCodeStringFromBlock('Script.FHDNavigator.Update'));
+            }
+        }
+    }
+}
