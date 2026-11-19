@@ -21,3 +21,9 @@ ZIP SHA-256: `32e6896708c0ecff507570b79d5bfc3f52b9955654c8501acb3fa91c54b6fa60`.
 - [0.2.1 SCRIPT_NODLL_TEST — исходники и установка](1FHD_Navigator_0.2.1_SCRIPT_NODLL_TEST_Nexus-GitHub)
 
 Старые файлы остаются без изменений.
+
+
+## FHD_Navigator 0.2.8
+
+- [Установочный архив](1FHD_Navigator_0.2.8_Nexus-GitHub/install/FHD_Navigator_0.2.8.zip)
+- [Исходники, материалы и проверка](1FHD_Navigator_0.2.8_Nexus-GitHub)
