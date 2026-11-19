@@ -1,0 +1,36 @@
+{
+  "mod": "FHD_Navigator",
+  "source_archive": "FHD_Navigator_0.2.8.zip",
+  "archive_sha256": "a96c35634aab7b2375d33b73ad291a1888a0661d4d02ccec6495b53f1a00d84a",
+  "archive_file_count": 5,
+  "original_files_in_source": 5,
+  "text_or_code_files": 1,
+  "byte_exact_DAT_to_JSON": 3,
+  "png_files": 1,
+  "data_loss_in_original_archive": false,
+  "dll_source_recovered_from_compiled_binary": false,
+  "game_tested": false,
+  "warnings": [],
+  "files": {
+    "Mods/FHD_MODS/FHD_Navigator/ModuleInfo.txt": {
+      "size": 1683,
+      "sha256": "6ecd57ac7a85c2c3f32161a1ccd5c354a30c83d86d61f0b446b483b8f645a99b"
+    },
+    "Mods/FHD_MODS/FHD_Navigator/Data/Image/RouteFrame.gi": {
+      "size": 94824,
+      "sha256": "73c3017a0cbb67668e37c8b698d59e8275719f87e913731e843f69b828b34bc2"
+    },
+    "Mods/FHD_MODS/FHD_Navigator/CFG/CacheData.dat": {
+      "size": 120,
+      "sha256": "9e8f9ea32e398af3f4b160faace7183ac88d0ac56aa1108bf4cbe914f15c652c"
+    },
+    "Mods/FHD_MODS/FHD_Navigator/CFG/Main.dat": {
+      "size": 745,
+      "sha256": "bac5651b430cb0dc7ab9a9c53371a314defcd5156aaae9752d36e10834639c2f"
+    },
+    "Mods/FHD_MODS/FHD_Navigator/CFG/Rus/Lang.dat": {
+      "size": 4604,
+      "sha256": "3ec415585a75b6fb83c3eb46d6875bb866e54aa8ae6116f57a706a7a525eacd4"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+Name=FHD_Navigator
+Section=FHD_MODS
+Author=Prolog_D
+Dependence=
+Conflict=
+Priority=2
+Languages=Rus
+SmallDescription=<color=0,255,0>Навигатор: время полёта по маршруту</color>
+SmallDescription=0.2.8 CLEAN
+FullDescription=Скриптовый расчёт примерных дней полёта по ручному маршруту. Без собственной DLL, фиксированных адресов и проверки хеша EXE. Точки отслеживаются через штатные элементы галактической карты. Учитывает остаток топлива, необходимые дозаправки с посадкой/взлётом и начальный взлёт. Гиперперелёт считается отдельно для каждого участка; полёт внутри систем приблизительный, по прямой.
+FullDescription=Навигатор запускает установленный FHD_Autopilot 2.04/2.05 по выбранному маршруту. Кнопка появляется после открытия штатной анимации.
+SmallDescription=------------------------------------  <color=0,200,255>ENG</color>  ----------------------------------------
+FullDescription=------------------------------------  <color=0,200,255>ENG</color>  ----------------------------------
+Languages=Eng
+SmallDescription=<color=0,255,0>Navigator: route flight time</color>
+SmallDescription=0.2.8 CLEAN
+FullDescription=Script-based estimation of travel days along a manual route. Uses no custom DLL, hardcoded memory addresses, or EXE hash checks. Waypoints are tracked via native galaxy map UI elements. Accounts for remaining fuel, required refueling stops (including landing/takeoff), and initial takeoff. Hyperjumps are calculated separately for each leg; in-system flight is estimated along a straight line.
+FullDescription=Navigator launches the installed FHD_Autopilot 2.04/2.05 along the selected route. The button appears after the default animation opens.
